@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodHub - Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-yellow: #FFD166;
+            --primary-pink: #EF476F;
+            --primary-teal: #06D6A0;
+            --primary-blue: #118AB2;
+            --dark-blue: #073B4C;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .login-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .choice-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .choice-btn {
+            padding: 1rem;
+            border: 2px solid var(--primary-yellow);
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .choice-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .choice-btn.active {
+            background: var(--primary-yellow);
+            border-color: var(--primary-yellow);
+        }
+
+        .login-form {
+            display: none;
+        }
+
+        .login-form.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn-primary {
+            background: var(--primary-pink);
+            border: none;
+            padding: 1rem;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: #EC2458;
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .food-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .login-header h1 {
+            color: var(--dark-blue);
+            font-weight: 700;
+        }
+
+        .tagline {
+            color: var(--primary-blue);
+        }
+
+        .alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header text-center mb-4">
+            <div class="food-icon">🍕</div>
+            <h1>FoodHub</h1>
+            <p class="tagline">Delivering delicious, lightning fast.</p>
+        </div>
+
+        <!-- Choice Buttons -->
+        <div class="choice-buttons">
+            <button type="button" class="choice-btn active" onclick="showForm('customer')">Customer</button>
+            <button type="button" class="choice-btn" onclick="showForm('admin')">Admin</button>
+        </div>
+
+        <!-- Customer Login Form -->
+        <form id="customerForm" class="login-form active">
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" id="customerEmail" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" id="customerPassword" required>
+            </div>
+            <button type="button" class="btn btn-primary w-100" onclick="handleLogin('customer')" id="customerBtn">
+                <span class="btn-text">Login as Customer</span>
+                <span class="btn-loading" style="display: none;">Loading...</span>
+            </button>
+        </form>
+
+        <!-- Admin Login Form -->
+        <form id="adminForm" class="login-form">
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-control" id="adminUsername" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" id="adminPassword" required>
+            </div>
+            <button type="button" class="btn btn-primary w-100" onclick="handleLogin('admin')" id="adminBtn">
+                <span class="btn-text">Login as Admin</span>
+                <span class="btn-loading" style="display: none;">Loading...</span>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Toggle between Customer/Admin forms
+        function showForm(type) {
+            console.log(`🔄 Switching to ${type} form`);
+            
+            // Update active button
+            document.querySelectorAll('.choice-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.choice-btn').forEach(btn => {
+                if (btn.textContent.toLowerCase().includes(type)) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Toggle forms
+            document.getElementById('customerForm').classList.remove('active');
+            document.getElementById('adminForm').classList.remove('active');
+            document.getElementById(type + 'Form').classList.add('active');
+        }
+
+        // Handle Login Submission
+        async function handleLogin(type) {
+            console.log(`🔄 Handling ${type} login`);
+
+            let username, password;
+            const button = document.getElementById(type + 'Btn');
+            const btnText = button.querySelector('.btn-text');
+            const btnLoading = button.querySelector('.btn-loading');
+
+            if (type === 'customer') {
+                username = document.getElementById('customerEmail').value.trim();
+                password = document.getElementById('customerPassword').value.trim();
+            } else {
+                username = document.getElementById('adminUsername').value.trim();
+                password = document.getElementById('adminPassword').value.trim();
+            }
+
+            console.log(`📧 Login attempt for ${type}: ${username}`);
+
+            if (!username || !password) {
+                showMessage('Please fill in all fields', 'error');
+                return;
+            }
+
+            // Loading state
+            btnText.style.display = 'none';
+            btnLoading.style.display = 'inline';
+            button.disabled = true;
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ type, username, password })
+                });
+
+                console.log(`📨 Response status: ${response.status}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log('📨 Server response:', data);
+
+                if (data.success) {
+                    showMessage(data.message, 'success');
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 1000);
+                } else {
+                    showMessage(data.message, 'error');
+                }
+            } catch (error) {
+                console.error('❌ Fetch error:', error);
+                showMessage('Network error: Could not connect to server. Make sure Flask is running.', 'error');
+            } finally {
+                // Reset button state
+                btnText.style.display = 'inline';
+                btnLoading.style.display = 'none';
+                button.disabled = false;
+            }
+        }
+
+        // Display message (success/error)
+        function showMessage(message, type) {
+            const existingMessage = document.querySelector('.alert');
+            if (existingMessage) existingMessage.remove();
+
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type === 'success' ? 'success' : 'danger'}`;
+            alert.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            alert.textContent = message;
+
+            document.body.appendChild(alert);
+            setTimeout(() => alert.remove(), 4000);
+        }
+
+        // Allow form submission with Enter key
+        document.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                const activeForm = document.querySelector('.login-form.active');
+                if (activeForm) {
+                    const type = activeForm.id.replace('Form', '');
+                    handleLogin(type);
+                }
+            }
+        });
+
+        console.log("✅ Frontend JavaScript loaded successfully");
+    </script>
+</body>
+</html>

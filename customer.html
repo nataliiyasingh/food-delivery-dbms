@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodHub - Customer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-yellow: #FFD166;
+            --primary-pink: #EF476F;
+            --primary-teal: #06D6A0;
+            --primary-blue: #118AB2;
+            --dark-blue: #073B4C;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        .cart-btn {
+            background: var(--primary-yellow);
+            border: none;
+            color: var(--dark-blue);
+            font-weight: 600;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 209, 102, 0.4);
+        }
+
+        .hero-section {
+            background: linear-gradient(rgba(7, 59, 76, 0.8), rgba(7, 59, 76, 0.8)), 
+                        url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .restaurant-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .restaurant-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            background-color: #f8f9fa;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .restaurant-name {
+            font-weight: 700;
+            color: var(--dark-blue);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .restaurant-cuisine {
+            color: var(--primary-blue);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .restaurant-rating {
+            color: var(--primary-yellow);
+            font-weight: 600;
+        }
+
+        .restaurant-address {
+            color: var(--primary-blue);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .order-btn {
+            background: var(--primary-pink);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .order-btn:hover {
+            background: #EC2458;
+            transform: translateY(-2px);
+        }
+
+        .section-title {
+            color: var(--dark-blue);
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-size: 2.5rem;
+        }
+
+        .cart-count {
+            background: var(--primary-pink);
+            color: white;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 0.8rem;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <span class="me-2">🍕</span>FoodHub
+            </a>
+            
+            <div class="navbar-nav ms-auto">
+                <button class="btn cart-btn" onclick="viewCart()">
+                    <i class="fas fa-shopping-cart me-2"></i>Cart
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <a href="/" class="btn btn-outline-light ms-2">
+                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+    <div class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">Hungry? We Got You!</h1>
+            <p class="hero-subtitle">Discover the best restaurants in town and get food delivered to your doorstep</p>
+            <div class="input-group mb-3 w-50 mx-auto">
+                <input type="text" class="form-control form-control-lg" placeholder="Search for restaurants..." id="searchInput">
+                <button class="btn btn-warning" type="button" onclick="searchRestaurants()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h2 class="section-title">Featured Restaurants</h2>
+        
+        <div class="row" id="restaurantsContainer">
+            <div class="col-12 text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading restaurants...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="cartModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Your Cart</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="cartItems">
+                        <p class="text-muted">Your cart is empty</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continue Shopping</button>
+                    <button type="button" class="btn btn-primary" onclick="checkout()">Proceed to Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let cart = [];
+        let restaurants = [];
+        document.addEventListener('DOMContentLoaded', function() {
+            loadRestaurants();
+        });
+        async function loadRestaurants() {
+            try {
+                const response = await fetch('/get_restaurants');
+                const data = await response.json();
+                
+                if (data.success) {
+                    restaurants = data.restaurants;
+                    displayRestaurants(restaurants);
+                } else {
+                    showMessage('Error loading restaurants: ' + data.message, 'error');
+                    displaySampleRestaurants();
+                }
+            } catch (error) {
+                console.error('Error loading restaurants:', error);
+                showMessage('Network error loading restaurants', 'error');
+                displaySampleRestaurants();
+            }
+        }
+        function displayRestaurants(restaurantsToShow) {
+            const container = document.getElementById('restaurantsContainer');
+            
+            if (restaurantsToShow.length === 0) {
+                container.innerHTML = `
+                    <div class="col-12 text-center">
+                        <p class="text-muted">No restaurants found. Please check back later.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = restaurantsToShow.map(restaurant => `
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card restaurant-card">
+                        <div class="restaurant-image" style="background-image: url('${getRestaurantImage(restaurant.name || restaurant.restaurant_name)}')">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="restaurant-name">${restaurant.name || restaurant.restaurant_name || 'Restaurant'}</h5>
+                            <p class="restaurant-cuisine">
+                                <i class="fas fa-utensils me-2"></i>
+                                ${restaurant.cuisine || 'Various Cuisine'}
+                            </p>
+                            <p class="restaurant-address">
+                                <i class="fas fa-map-marker-alt me-2"></i>
+                                ${restaurant.address || restaurant.restaurant_address || 'Sector 100'}
+                            </p>
+                            <p class="restaurant-rating">
+                                <i class="fas fa-star me-2"></i>
+                                ${restaurant.rating || '4.5'} • ${restaurant.delivery_time || '25-35 min'}
+                            </p>
+                            <p class="text-muted">${restaurant.description || 'Delicious food delivered fast!'}</p>
+                            <button class="btn order-btn" onclick="viewMenu(${restaurant.id || restaurant.restaurant_id})">
+                                <i class="fas fa-eye me-2"></i>View Menu
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getRestaurantImage(restaurantName) {
+            if (!restaurantName) return 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&w=500&q=80';
+            
+            const name = restaurantName.toLowerCase();
+            const imageMap = {
+                'italian magic': 'https://images.unsplash.com/photo-1598866594230-a7c12756260f?ixlib=rb-4.0.3&w=500&q=80',
+                'best burger': 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-4.0.3&w=500&q=80',
+                'indian rasoi': 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?ixlib=rb-4.0.3&w=500&q=80',
+                'ikigai': 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?ixlib=rb-4.0.3&w=500&q=80',
+                'chinatown': 'https://images.unsplash.com/photo-1551790628-4a24c2e20b0b?ixlib=rb-4.0.3&w=500&q=80'
+            };
+            if (imageMap[name]) {
+                return imageMap[name];
+            }
+
+            return 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&w=500&q=80';
+        }
+        function displaySampleRestaurants() {
+            const sampleRestaurants = [
+                { id: 1, name: "Italian Magic", cuisine: "Italian", address: "Sector 100", rating: "4.5", delivery_time: "25-35 min", description: "Authentic Italian pizzas and pasta" },
+                { id: 2, name: "Best Burger", cuisine: "American", address: "Sector 143", rating: "4.7", delivery_time: "20-30 min", description: "Juicy burgers and crispy fries" },
+                { id: 3, name: "Indian Rasoi", cuisine: "Indian", address: "Sector 62", rating: "4.8", delivery_time: "30-40 min", description: "Traditional Indian cuisine" },
+                { id: 4, name: "Ikigai", cuisine: "Japanese", address: "Sector 44", rating: "4.9", delivery_time: "35-45 min", description: "Fresh sushi and Japanese delicacies" },
+                { id: 5, name: "Chinatown", cuisine: "Chinese", address: "Sector 42", rating: "4.6", delivery_time: "20-25 min", description: "Authentic Chinese flavors" }
+            ];
+            
+            displayRestaurants(sampleRestaurants);
+        }
+        function searchRestaurants() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = restaurants.filter(restaurant => 
+                (restaurant.name && restaurant.name.toLowerCase().includes(searchTerm)) ||
+                (restaurant.cuisine && restaurant.cuisine.toLowerCase().includes(searchTerm)) ||
+                (restaurant.restaurant_name && restaurant.restaurant_name.toLowerCase().includes(searchTerm)) ||
+                (restaurant.address && restaurant.address.toLowerCase().includes(searchTerm)) ||
+                (restaurant.restaurant_address && restaurant.restaurant_address.toLowerCase().includes(searchTerm))
+            );
+            
+            if (filtered.length === 0 && searchTerm) {
+                displayRestaurants([]);
+                showMessage('No restaurants found matching your search', 'info');
+            } else {
+                displayRestaurants(searchTerm ? filtered : restaurants);
+            }
+        }
+        function viewMenu(restaurantId) {
+            window.location.href = `/menu/${restaurantId}`;
+        }
+        function viewCart() {
+            if (cart.length === 0) {
+                document.getElementById('cartItems').innerHTML = '<p class="text-muted">Your cart is empty</p>';
+            } else {
+                document.getElementById('cartItems').innerHTML = cart.map(item => `
+                    <div class="cart-item d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h6>${item.name}</h6>
+                            <small class="text-muted">$${item.price} x ${item.quantity}</small>
+                        </div>
+                        <div>
+                            <span class="fw-bold">$${(item.price * item.quantity).toFixed(2)}</span>
+                            <button class="btn btn-sm btn-outline-danger ms-2" onclick="removeFromCart(${item.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
+            cartModal.show();
+        }
+        function updateCartCount() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = totalItems;
+        }
+        function addToCart(item) {
+            const existingItem = cart.find(cartItem => cartItem.id === item.id);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({ ...item, quantity: 1 });
+            }
+            updateCartCount();
+            showMessage('Item added to cart!', 'success');
+        }
+        function removeFromCart(itemId) {
+            cart = cart.filter(item => item.id !== itemId);
+            updateCartCount();
+            viewCart();
+            showMessage('Item removed from cart', 'info');
+        }
+        function checkout() {
+            if (cart.length === 0) {
+                showMessage('Your cart is empty!', 'error');
+                return;
+            }
+            showMessage('Checkout feature coming soon!', 'info');
+        }
+        function showMessage(message, type) {
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'info'} position-fixed`;
+            alert.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            alert.textContent = message;
+
+            document.body.appendChild(alert);
+            setTimeout(() => alert.remove(), 4000);
+        }
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchRestaurants();
+            }
+        });
+    </script>
+</body>
+</html>
